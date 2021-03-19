@@ -22,12 +22,12 @@ class DBController {
         try {
             await this.client.connect();
 
-            const cursor = this.client.db("db_ecb_project").collection("vehicles").find(args);
+            const cursor = this.client.db('db_ecb_project').collection("vehicles").find(args);
             const results = await cursor.toArray();
             
             return results;
         } catch (e) {
-            console.log('error from getAllVehicles>>>', e);
+            throw `error from getAllVehicles>>> ${e}`;
         } finally {
             await this.client.close();
         }
@@ -38,7 +38,7 @@ class DBController {
             await this.client.connect();
             const result = await this.client.db('db_ecb_project').collection('vehicles').findOne(args);
         } catch (e) {
-            console.log('error from getVehicle>>>', e);
+            throw `error from getVehicle>>> ${e}`;
         } finally {
             await this.client.close();
         }

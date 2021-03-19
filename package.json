@@ -10,7 +10,8 @@
     "typescript": "^4.2.3"
   },
   "scripts": {
-    "start": "npx ts-node index.ts",
-    "build": "npx tsc"
+    "start": "ts-node index.ts",
+    "build": "npx tsc",
+    "dev": "nodemon index.ts"
   }
 }
