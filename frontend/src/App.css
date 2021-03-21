@@ -9,12 +9,16 @@
   height: 100%;
 }
 
-.MuiCard-root {
+.MuiCard-root, .MuiCardActionArea-root {
   height: 100%;
-  cursor: pointer;
 }
 
 h3, h4.MuiTypography-root {
   text-align: center;
   padding: 20px 0;
+}
+
+.selected .MuiTouchRipple-root {
+  background-color: rgba(0,0,255,0.2);
+  transition: background-color ease-in-out 0.2s 0.1s;
 }
