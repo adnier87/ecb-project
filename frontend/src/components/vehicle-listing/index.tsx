@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { CircularProgress, Fade, Grid, Grow, Container, Typography } from '@material-ui/core';
+import { CircularProgress, Fade, Grid, Grow, Container, Typography, Snackbar, Slide } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import { getAllVehicles } from '../../requester';
 import VehicleCard from '../vehicle-card';
 import { FavoriteBorderRounded } from '@material-ui/icons';
@@ -9,6 +10,14 @@ const VehicleListing = () => {
     const [loading, setLoading] = useState(true);
     const [showLoader, setShowLoader] = useState(true);
     const [showVehicles, setShowVehicles] = useState(false);
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
+
+    useEffect((): void => {
+        if (alertMessage && !showAlert) {
+            setShowAlert(true);
+        }
+    }, [alertMessage])
 
     useEffect((): void => {
         getAllVehicles()
@@ -71,6 +80,19 @@ const VehicleListing = () => {
                     }
                 </Grid>
             </Container>
+            <Snackbar
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                open={showAlert}
+                autoHideDuration={4000}
+                TransitionComponent={Slide}
+            >
+                <Alert onClose={()=>{
+                    setShowAlert(false);
+                    setTimeout(() => {
+                        setAlertMessage('');
+                    }, 6000);
+                }} severity='success'>{alertMessage}</Alert>
+            </Snackbar>
         </div>
     )
 }
