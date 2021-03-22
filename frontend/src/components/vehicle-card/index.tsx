@@ -18,7 +18,7 @@ const useStyle = makeStyles({
     }
 })
 
-const VehicleCard = ({ data }: any) => {
+const VehicleCard = ({ data, onClickCard }: any) => {
     const classes = useStyle();
 
     const [selected, setSelection] = useState(false);
@@ -26,7 +26,8 @@ const VehicleCard = ({ data }: any) => {
     return (
             <Card
                 className={classes.root}
-                onClick={(ev) => {
+                onClick={() => {
+                    onClickCard(data.id);
                     setSelection(!selected)
                 }}
             >

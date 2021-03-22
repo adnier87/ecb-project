@@ -1,9 +1,17 @@
 import { useState, useEffect } from 'react';
-import { CircularProgress, Fade, Grid, Grow, Container, Typography, Snackbar, Slide } from '@material-ui/core';
+import { CircularProgress, Fade, Grid, Grow, Container, Typography, Snackbar, Slide, Modal, TextField, Dialog, DialogContent, DialogActions, Button, DialogTitle, makeStyles } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { getAllVehicles } from '../../requester';
 import VehicleCard from '../vehicle-card';
-import { FavoriteBorderRounded } from '@material-ui/icons';
+import DatePicker from 'react-datepicker';
+
+import "react-datepicker/dist/react-datepicker.css";
+
+const useStyle = makeStyles({
+    dialog: {
+        position: 'unset'
+    }
+})
 
 const VehicleListing = () => {
     const [vehicles, setVehicles] = useState([]);
@@ -12,6 +20,12 @@ const VehicleListing = () => {
     const [showVehicles, setShowVehicles] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [alertMessage, setAlertMessage] = useState('');
+    const [showForm, setShowForm] = useState(false);
+    const [date, setDate] = useState(new Date());
+    const [person, setPerson] = useState('');
+    const [selectedVehicleId, setSelectedVehicleId] = useState(0);
+
+    const classes = useStyle();
 
     useEffect((): void => {
         if (alertMessage && !showAlert) {
@@ -36,6 +50,15 @@ const VehicleListing = () => {
                 console.error(`Error from VehicleListing trying to get vehicles::: ${error}`);
             })
     }, [])
+
+    const showVehicleForm = (id: number): void => {
+        setSelectedVehicleId(id);
+        setShowForm(true);
+    }
+
+    const sendData = (): void => {
+
+    }
 
     return (
         <div>
@@ -72,7 +95,7 @@ const VehicleListing = () => {
                                         sm={6}
                                         md={3}
                                     >
-                                        <VehicleCard data={vehicle} />
+                                        <VehicleCard onClickCard={showVehicleForm} data={vehicle} />
                                     </Grid>
                                 </Grow>
                             )
@@ -80,6 +103,7 @@ const VehicleListing = () => {
                     }
                 </Grid>
             </Container>
+
             <Snackbar
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 open={showAlert}
@@ -93,6 +117,36 @@ const VehicleListing = () => {
                     }, 6000);
                 }} severity='success'>{alertMessage}</Alert>
             </Snackbar>
+
+            <Dialog
+                open={showForm}
+                className="main-dialog"
+            >
+                <DialogTitle>
+                    Ingreso de datos
+                </DialogTitle>
+                <DialogContent>
+                    <TextField required id="person-input" label="Persona" onChange={(ev) => {
+                        setPerson(ev.target.value);
+                        console.log(person);
+                    }} />
+                    <DatePicker selected={date} onChange={(d: Date) => {
+                        setDate(d);
+                    }} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {
+                        setShowForm(false);
+                        setPerson('');
+                        setDate(new Date);
+                    }} color="primary">
+                        Cancelar
+                    </Button>
+                    <Button onClick={sendData} color="primary">
+                        Enviar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }
