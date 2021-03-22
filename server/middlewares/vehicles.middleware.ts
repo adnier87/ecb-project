@@ -18,7 +18,12 @@ const updateVehicle = (req: Request, res: Response): void => {
         ...body,
         id: req.params.id
     }
-    dbController.updateVehicle(args);
+    dbController.updateVehicle(args)
+        .then((response) => {
+            res.send(response);
+
+            console.log(`Vehicle was modified::: ${JSON.stringify(response)}`);
+        })
 }
 
 export {

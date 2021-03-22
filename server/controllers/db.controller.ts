@@ -47,13 +47,17 @@ class DBController {
     public async updateVehicle(args) {
         try {
             await this.client.connect()
-            const result = await this.client.db('db_ecb_project').collection('vehicles').update(
+            const result = await this.client.db('db_ecb_project').collection('vehicles').findOneAndUpdate(
                 { _id: ObjectId(args.id) },
                 {
                     $set: { 'person': args.person, 'estimatedate': args.estimateDate },
-                    $currentDate: { lastModified: true }
+                },
+                {
+                    returnOriginal: false
                 }
-            ); 
+            );
+
+            return result.value;
         } catch (e) {
             throw `error from updateVehicle>>> ${e}`;
         }

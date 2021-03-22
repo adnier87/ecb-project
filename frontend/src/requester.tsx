@@ -11,10 +11,11 @@ const getAllVehicles = async (): Promise<any> => {
 
 const updateData = async (data: any): Promise<any> => {
     try {
-        await axios.post(`/api/vehicle/${data._id}`, {
+        const response = await axios.post(`/api/vehicle/${data._id}`, {
             person: data.person,
             estimateDate: data.date
         })
+        return response.data;
     } catch (error) {
         throw error;
     }

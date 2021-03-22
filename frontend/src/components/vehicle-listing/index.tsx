@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { CircularProgress, Fade, Grid, Grow, Container, Typography, Snackbar, Slide, Modal, TextField, Dialog, DialogContent, DialogActions, Button, DialogTitle, makeStyles } from '@material-ui/core';
-import { Alert } from '@material-ui/lab';
+import { Alert, Color } from '@material-ui/lab';
 import { getAllVehicles, updateData } from '../../requester';
 import VehicleCard from '../vehicle-card';
 import DatePicker from 'react-datepicker';
@@ -14,12 +14,12 @@ const useStyle = makeStyles({
 })
 
 const VehicleListing = () => {
-    const [vehicles, setVehicles] = useState([]);
+    const [vehicles, setVehicles] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [showLoader, setShowLoader] = useState(true);
     const [showVehicles, setShowVehicles] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
-    const [alertMessage, setAlertMessage] = useState('');
+    const [alertMessage, setAlertMessage] = useState<{message: string, type: Color}>({message: '', type: 'success'});
     const [showForm, setShowForm] = useState(false);
     const [date, setDate] = useState(new Date());
     const [person, setPerson] = useState('');
@@ -28,7 +28,7 @@ const VehicleListing = () => {
     const classes = useStyle();
 
     useEffect((): void => {
-        if (alertMessage && !showAlert) {
+        if (alertMessage.message !== '' && !showAlert) {
             setShowAlert(true);
         }
     }, [alertMessage])
@@ -74,7 +74,25 @@ const VehicleListing = () => {
             date: fullDate,
         }; console.log(`Sending data::: ${JSON.stringify(data)}`);
 
-        updateData(data);
+        updateData(data)
+            .then((response: any) => {
+                const modifiedVehicles = vehicles.map(vehicle => {
+                    if (vehicle._id === response._id) vehicle = response;
+                    return vehicle;
+                });
+                setVehicles(modifiedVehicles);
+
+                setAlertMessage({
+                    message: `Se ha asignado correctamente el vehiculo ${response.id} al cliente ${response.person}`,
+                    type: 'success',
+                })
+            })
+            .catch((e) => {
+                setAlertMessage({
+                    message: e,
+                    type: 'error',
+                })
+            });
         setShowForm(false);
         setTimeout(() => {
             setPerson('');
@@ -135,9 +153,9 @@ const VehicleListing = () => {
                 <Alert onClose={()=>{
                     setShowAlert(false);
                     setTimeout(() => {
-                        setAlertMessage('');
+                        setAlertMessage({message: '', type: 'success'});
                     }, 6000);
-                }} severity='success'>{alertMessage}</Alert>
+                }} severity={alertMessage.type}>{alertMessage.message}</Alert>
             </Snackbar>
 
             <Dialog
