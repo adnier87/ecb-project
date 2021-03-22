@@ -27,7 +27,7 @@ const VehicleCard = ({ data, onClickCard }: any) => {
             <Card
                 className={classes.root}
                 onClick={() => {
-                    onClickCard(data.id);
+                    onClickCard(data._id);
                     setSelection(!selected)
                 }}
             >

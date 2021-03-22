@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { CircularProgress, Fade, Grid, Grow, Container, Typography, Snackbar, Slide, Modal, TextField, Dialog, DialogContent, DialogActions, Button, DialogTitle, makeStyles } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { getAllVehicles } from '../../requester';
+import { getAllVehicles, updateData } from '../../requester';
 import VehicleCard from '../vehicle-card';
 import DatePicker from 'react-datepicker';
 
@@ -57,7 +57,29 @@ const VehicleListing = () => {
     }
 
     const sendData = (): void => {
+        const day = date.getDate()
+        const month = date.getMonth() + 1
+        const year = date.getFullYear()
+        let fullDate = '';
 
+        if (month < 10) {
+            fullDate = `${day}/0${month}/${year}`;
+        } else {
+            fullDate = `${day}/${month}/${year}`;
+        }
+
+        const data = {
+            _id: selectedVehicleId,
+            person,
+            date: fullDate,
+        }; console.log(`Sending data::: ${JSON.stringify(data)}`);
+
+        updateData(data);
+        setShowForm(false);
+        setTimeout(() => {
+            setPerson('');
+            setDate(new Date());
+        }, 500);
     }
 
     return (
@@ -128,7 +150,6 @@ const VehicleListing = () => {
                 <DialogContent>
                     <TextField required id="person-input" label="Persona" onChange={(ev) => {
                         setPerson(ev.target.value);
-                        console.log(person);
                     }} />
                     <DatePicker selected={date} onChange={(d: Date) => {
                         setDate(d);
