@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 const _dbUri: string = "mongodb+srv://root:6c$g3WA9gKxCv2N@cluster0.6udzn.mongodb.net/db_ecb_project?retryWrites=true&w=majority";
 
@@ -41,6 +41,21 @@ class DBController {
             throw `error from getVehicle>>> ${e}`;
         } finally {
             // await this.client.close();
+        }
+    }
+
+    public async updateVehicle(args) {
+        try {
+            await this.client.connect()
+            const result = await this.client.db('db_ecb_project').collection('vehicles').update(
+                { _id: ObjectId(args.id) },
+                {
+                    $set: { 'person': args.person, 'estimatedate': args.estimateDate },
+                    $currentDate: { lastModified: true }
+                }
+            ); 
+        } catch (e) {
+            throw `error from updateVehicle>>> ${e}`;
         }
     }
 }

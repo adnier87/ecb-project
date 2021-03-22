@@ -1,5 +1,5 @@
 import { Application, Response, Request } from 'express';
-import { getAllVehicles } from '../middlewares/vehicles.middleware';
+import { getAllVehicles, updateVehicle } from '../middlewares/vehicles.middleware';
 
 export default class VehiculeRoutes {
     private app: Application;
@@ -10,6 +10,7 @@ export default class VehiculeRoutes {
 
     public initRoutes() {
         this.app.get('/api/vehicles', getAllVehicles);
+        this.app.post('/api/vehicle/:id', updateVehicle)
 
         console.log('Info::: Vehicule Routes are configured!!!');
     }

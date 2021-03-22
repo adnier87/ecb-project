@@ -1,7 +1,7 @@
 import express from 'express';
 import ProjectRoutes from './routes/index';
 import path from 'path';
-import dbController from './controllers/db.controller';
+import { json, urlencoded } from 'body-parser';
 
 export default class Server {
     private app: express.Application;
@@ -10,6 +10,8 @@ export default class Server {
         this.app = app;
 
         this.app.use(express.static(path.resolve("./") + "/build/frontend"));
+        this.app.use(json());
+        this.app.use(urlencoded({extended: true}));
 
         const routes: ProjectRoutes = new ProjectRoutes(app);
         routes.initRoutes();
