@@ -51,5 +51,19 @@ class DBController {
             }
         });
     }
+    updateVehicle(args) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield this.client.connect();
+                const result = yield this.client.db('db_ecb_project').collection('vehicles').update({ _id: mongodb_1.ObjectId(args.id) }, {
+                    $set: { 'person': args.person, 'estimatedate': args.estimateDate },
+                    $currentDate: { lastModified: true }
+                });
+            }
+            catch (e) {
+                throw `error from updateVehicle>>> ${e}`;
+            }
+        });
+    }
 }
 exports.default = DBController.getInstance();

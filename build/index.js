@@ -6,6 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = __importDefault(require("./server/index"));
 const express_1 = __importDefault(require("express"));
 const app = express_1.default();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5000;
 const server = new index_1.default(app);
 server.start(port);
