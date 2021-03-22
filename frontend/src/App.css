@@ -22,3 +22,7 @@ h3, h4.MuiTypography-root {
   background-color: rgba(0,0,255,0.2);
   transition: background-color ease-in-out 0.2s 0.1s;
 }
+
+.main-dialog .MuiDialog-paper {
+  position: unset;
+}
