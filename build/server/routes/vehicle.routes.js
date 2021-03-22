@@ -1,13 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const vehicles_middleware_1 = require("../middlewares/vehicles.middleware");
 class VehiculeRoutes {
     constructor(app) {
         this.app = app;
     }
     initRoutes() {
-        this.app.get("/api", (req, res) => {
-            res.send("You have reached the API!");
-        });
+        this.app.get('/api/vehicles', vehicles_middleware_1.getAllVehicles);
         console.log('Info::: Vehicule Routes are configured!!!');
     }
 }
