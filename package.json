@@ -12,6 +12,6 @@
   "scripts": {
     "start": "ts-node index.ts",
     "build": "npx tsc",
-    "dev": "nodemon index.ts"
+    "dev": "nodemon --watch './server/*' index.ts"
   }
 }

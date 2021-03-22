@@ -29,7 +29,7 @@ class DBController {
         } catch (e) {
             throw `error from getAllVehicles>>> ${e}`;
         } finally {
-            await this.client.close();
+            // await this.client.close();
         }
     }
 
@@ -40,7 +40,7 @@ class DBController {
         } catch (e) {
             throw `error from getVehicle>>> ${e}`;
         } finally {
-            await this.client.close();
+            // await this.client.close();
         }
     }
 }
